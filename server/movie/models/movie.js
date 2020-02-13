@@ -18,7 +18,7 @@ const movieSchema = new Schema({
         required: true
     },
     tags: {
-        type: Array,
+        type: [String],
         validate: {
             validator: function (v) {
                 return v.length === 0 ? false : true
