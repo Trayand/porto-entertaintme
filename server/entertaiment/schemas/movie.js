@@ -4,7 +4,7 @@ const axios = require('axios')
 const typeDefs = `
     extend type Query {
         movies : [Movie]
-        movie : Movie
+        movie(id: String) : Movie
     }
 
     extend type Mutation {
