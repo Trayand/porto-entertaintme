@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const routes = require('./routes')
 const morgan = require('morgan')('dev')
 const errorHandler = require('./middlewares/errorHandler')
-const port = 3001
+const port = 3002
 const MongoUri = 'mongodb+srv://ayam:goreng@cluster0-pdvx8.mongodb.net/test?retryWrites=true&w=majority'
 
 app.use(express.json())
