@@ -5,6 +5,7 @@ const series = require('./schemas/series')
 
 const typeDefs = `
     type Query
+    type Mutation
 `
 
 const schema = makeExecutableSchema({
