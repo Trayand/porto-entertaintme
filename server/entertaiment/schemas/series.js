@@ -8,6 +8,7 @@ extend type Query {
 }
     
     type Series {
+        _id: String
         title: String
         overview: String
         poster_path: String

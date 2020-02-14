@@ -25,7 +25,11 @@ class Controller {
 
     static updateSeries(req, res, next) {
         // const { title, overview, poster_path, popularity, tags } = req.body
-
+        for (const key in req.body) {
+            if (!req.body[key] || key === '_id') {
+                delete req.body[key]
+            }
+        }
         Series.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
             .then((result) => {
                 res.status(200).json(result)

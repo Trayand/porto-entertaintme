@@ -26,8 +26,16 @@ class Controller {
     static updateMovie(req, res, next) {
         // const { title, overview, poster_path, popularity, tags } = req.body
 
+        // for (const key in req.body) {
+        //     if (!req.body[key] || key === '_id') {
+        //         delete req.body[key]
+        //     }
+        // }
+        console.log(req.body, 'ini');
+
         Movie.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
             .then((result) => {
+                console.log(result);
                 res.status(200).json(result)
             }).catch(next);
     }
