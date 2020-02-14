@@ -1,4 +1,3 @@
-const { ApolloServer, makeExecutableSchema } = require('apollo-server')
 const axios = require('axios')
 let local = 'http://localhost:3001'
 
@@ -14,14 +13,14 @@ const typeDefs = `
         deleteMovie(_id: String) : Movie
     }
         
-        type Movie {
-            _id: String
-            title: String
-            overview: String
-            poster_path: String
-            popularity: Int
-            tags: [String]
-        }
+    type Movie {
+        _id: String
+        title: String
+        overview: String
+        poster_path: String
+        popularity: Float!
+        tags: [String]
+    }
 `
 
 const resolvers = {
