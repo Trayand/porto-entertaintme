@@ -27,73 +27,93 @@ const typeDefs = `
 const resolvers = {
     Query: {
         movies: async () => {
-            let moviesCount = await redis.scard('moviesCount')
-            if (moviesCount > 0) {
-                const movies = await redis.hvals('movies')
-                return movies.map(JSON.parse)
+            try {
+                let moviesCount = await redis.scard('moviesCount')
+                if (moviesCount > 0) {
+                    const movies = await redis.hvals('movies')
+                    return movies.map(JSON.parse)
+                }
+
+                const { data } = await axios.get(local)
+                movies = data.reduce((acc, movie) => {
+                    acc.push(movie._id, JSON.stringify(movie))
+                    return acc
+                }, [])
+
+                redis.hset('movies', ...movies)
+                redis.expire('movies', 86400)
+
+                redis.sadd('moviesCount', ...data.map(t => t._id))
+                redis.expire('moviesCount', 86400)
+
+                return data
+            } catch (error) {
+                throw new ApolloError('Something wrong when get all movies')
             }
-
-            const { data } = await axios.get(local)
-            movies = data.reduce((acc, movie) => {
-                acc.push(movie._id, JSON.stringify(movie))
-                return acc
-            }, [])
-
-            redis.hset('movies', ...movies)
-            redis.expire('movies', 86400)
-
-            redis.sadd('moviesCount', ...data.map(t => t._id))
-            redis.expire('moviesCount', 86400)
-
-            return data
         },
         movie: async (parent, args) => {
-            let movie = await redis.hget('movies', args._id)
-            if (movie) return JSON.parse(movie)
+            try {
+                let movie = await redis.hget('movies', args._id)
+                if (movie) return JSON.parse(movie)
 
-            const { data } = await axios.get(`${local}/${args._id}`)
+                const { data } = await axios.get(`${local}/${args._id}`)
 
-            redis.hset('movies', args._id, JSON.stringify(data))
-            redis.expire('movies', 86400)
+                redis.hset('movies', args._id, JSON.stringify(data))
+                redis.expire('movies', 86400)
 
-            return data
+                return data
+            } catch (error) {
+                throw new ApolloError('Something wrong when get movie')
+            }
         }
     },
     Mutation: {
         createMovie: async (parent, args) => {
-            const { data } = await axios.post(local, { ...args })
+            try {
+                const { data } = await axios.post(local, { ...args })
 
-            redis.hset('movies', data._id, JSON.stringify(data))
-            redis.expire('movies', 86400)
+                redis.hset('movies', data._id, JSON.stringify(data))
+                redis.expire('movies', 86400)
 
-            const moviesCount = await redis.scard('moviesCount')
-            if (moviesCount > 0) {
-                redis.sadd('moviesCount', data._id)
-                redis.expire('moviesCount', 86400)
+                const moviesCount = await redis.scard('moviesCount')
+                if (moviesCount > 0) {
+                    redis.sadd('moviesCount', data._id)
+                    redis.expire('moviesCount', 86400)
+                }
+
+                return data
+            } catch (error) {
+                throw new ApolloError('Something wrong when create movie')
             }
-
-            return data
         },
         updateMovie: async (parent, args) => {
-            const { data } = await axios.put(`${local}/${args._id}`, { ...args })
+            try {
+                const { data } = await axios.put(`${local}/${args._id}`, { ...args })
 
-            redis.hset('movies', data._id, JSON.stringify(data))
-            redis.expire('movies', 86400)
+                redis.hset('movies', data._id, JSON.stringify(data))
+                redis.expire('movies', 86400)
 
-            redis.sadd('moviesCount', data._id)
-            redis.expire('moviesCount', 86400)
+                redis.sadd('moviesCount', data._id)
+                redis.expire('moviesCount', 86400)
 
-            return data
+                return data
+            } catch (error) {
+                throw new ApolloError('Something wrong when update movie')
+            }
         },
         deleteMovie: async (parent, args) => {
-            const { data } = await axios.delete(`${local}/${args._id}`)
+            try {
+                const { data } = await axios.delete(`${local}/${args._id}`)
 
-            redis.hdel('movies', args._id)
-            redis.spop('moviesCount', args._id)
+                redis.hdel('movies', args._id)
+                redis.spop('moviesCount', args._id)
 
-            return {
-                data,
-                message: `movie with id ${args._id} deleted`
+                return {
+                    data,
+                    message: `movie with id ${args._id} deleted`
+                }
+            } catch (error) {
+                throw new ApolloError('Something wrong when delete movie')
             }
         }
     }

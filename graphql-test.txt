@@ -1,0 +1,38 @@
+# # Write your query or mutation here
+# query{
+#   series{
+#     title
+#     _id
+#     overview
+#   }
+# }
+
+# mutation {
+#   updateMovie(_id: "5e45552ae1651d2cffee41c0", title: "jagoan sejati"){
+#     _id
+#     title
+#     overview
+#   }
+  # createSeries(
+  #       title: "The Flash 2"
+  #       overview: "TOP RATES"
+  #       poster_path: "https://i.pinimg.com/236x/7a/5a/d5/7a5ad516794f491da1bbd903f7367244.jpg"
+  #       popularity: 8
+  #       tags: ["action", "comedy"]
+  # ){
+  #   _id
+  #   title
+  #   overview
+  #   poster_path
+  #   popularity
+  #   tags
+  # }
+#   deleteMovie(_id: "5e45fe11d5153f09b71a30fb"){
+#     _id
+#     title
+#     overview
+#     poster_path
+#     popularity
+#     tags
+#   }
+# }
