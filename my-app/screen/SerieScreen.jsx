@@ -25,6 +25,7 @@ export default function SerieScreen(props) {
                         subtitle="tap for more"
                     // left={(props) => <Avatar.Icon {...props} icon="folder" />}
                     />
+                    <Text></Text>
                 </View>
                 <Card.Cover
                     source={{ uri: 'https://picsum.photos/700' }}
