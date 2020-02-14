@@ -12,11 +12,13 @@ const tab1 = () => {
         <Text style={{ color: DarkTheme.colors.text }} >Tab 1</Text>
     </View>
 }
+import SerieScreen from '../screen/SerieScreen';
 
 export default function RootNavigator() {
     return (
         <Tab.Navigator>
-            <Tab.Screen name="tab 1" component={tab1} />
+            <Tab.Screen name="Movies" component={tab1} />
+            <Tab.Screen name="TV Series" component={SerieScreen} />
         </Tab.Navigator>
     )
 }

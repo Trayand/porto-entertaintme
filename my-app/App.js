@@ -40,9 +40,9 @@ const MyTheme = {
     // primary: '#414141', // dark one but light more
     // background: '#525252', // lighten
     card: '#313131',// darker
-    // text: '#fff', // white
-    // border: '#fcffed', // lime
-    // accent: "#f1c40f" // light orange
+    text: '#fff', // white
+    border: '#fcffed', // lime
+    accent: "#f1c40f" // light orange
   },
 };
 
