@@ -80,6 +80,9 @@ const resolvers = {
             redis.hset('movies', data._id, JSON.stringify(data))
             redis.expire('movies', 86400)
 
+            redis.sadd('moviesCount', data._id)
+            redis.expire('moviesCount', 86400)
+
             return data
         },
         deleteMovie: async (parent, args) => {
