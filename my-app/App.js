@@ -1,29 +1,25 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import { DarkTheme, NavigationContainer } from '@react-navigation/native';
-const MyTheme = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    primary: '#414141',
-    background: '#525252',
-    card: '#313131',
-    text: '#fff',
-    border: '#fcffed',
-  },
-};
+import { StyleSheet, Text, View, StatusBar, Provide } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { configureFonts, DarkTheme, Provider as PaperProvider } from 'react-native-paper';
+
+
+
 import Constants from 'expo-constants';
 import RootNavigator from './navigators/RootNavigator'
 
 module.exports = function App() {
 
   return (
-    <NavigationContainer theme={MyTheme}>
-      <View style={styles.container} >
-        <StatusBar barStyle="dark-content" />
-        <RootNavigator />
-      </View>
-    </NavigationContainer>
+    <PaperProvider theme={MyTheme}>
+      <NavigationContainer theme={MyTheme}>
+        <View style={{ height: Constants.statusBarHeight, backgroundColor: 'black' }}></View>
+        <View style={styles.container} >
+          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+          <RootNavigator />
+        </View>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
@@ -32,6 +28,41 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
-    marginTop: Constants.statusBarHeight
+    // marginTop: Constants.statusBarHeight
   },
 });
+
+const MyTheme = {
+  ...DarkTheme,
+  fonts: configureFonts(fontConfig),
+  colors: {
+    ...DarkTheme.colors,
+    // primary: '#414141', // dark one but light more
+    // background: '#525252', // lighten
+    card: '#313131',// darker
+    // text: '#fff', // white
+    // border: '#fcffed', // lime
+    // accent: "#f1c40f" // light orange
+  },
+};
+
+const fontConfig = {
+  default: {
+    regular: {
+      fontFamily: 'sans-serif',
+      fontWeight: 'normal',
+    },
+    medium: {
+      fontFamily: 'sans-serif-medium',
+      fontWeight: 'normal',
+    },
+    light: {
+      fontFamily: 'sans-serif-light',
+      fontWeight: 'normal',
+    },
+    thin: {
+      fontFamily: 'sans-serif-thin',
+      fontWeight: 'normal',
+    },
+  },
+};

@@ -1,5 +1,6 @@
 const axios = require('axios')
 let local = 'http://localhost:3001'
+const redis = require('../config/redis')
 
 const typeDefs = `
     extend type Query {
