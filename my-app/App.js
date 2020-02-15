@@ -2,24 +2,28 @@ import React from 'react';
 import { StyleSheet, Text, View, StatusBar, Provide } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { configureFonts, DarkTheme, Provider as PaperProvider } from 'react-native-paper';
-
+import ApolloClient from './graphql';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 
 import Constants from 'expo-constants';
 import RootNavigator from './navigators/RootNavigator'
+import StackNavigator from './navigators/StackRootNavigator';
 
 module.exports = function App() {
 
   return (
-    <PaperProvider theme={MyTheme}>
-      <NavigationContainer theme={MyTheme}>
-        <View style={{ height: Constants.statusBarHeight, backgroundColor: 'black' }}></View>
-        <View style={styles.container} >
-          <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
-          <RootNavigator />
-        </View>
-      </NavigationContainer>
-    </PaperProvider>
+    <ApolloProvider client={ApolloClient} >
+      <PaperProvider theme={MyTheme}>
+        <NavigationContainer theme={MyTheme}>
+          <View style={{ height: Constants.statusBarHeight, backgroundColor: 'black' }}></View>
+          <View style={styles.container} >
+            <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+            <StackNavigator />
+          </View>
+        </NavigationContainer>
+      </PaperProvider>
+    </ApolloProvider>
   );
 }
 

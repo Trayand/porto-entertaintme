@@ -1,57 +1,49 @@
-import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Alert, FlatList } from 'react-native';
+import { Searchbar } from 'react-native-paper';
+import { gql } from 'apollo-boost'
+import { useQuery } from '@apollo/react-hooks'
+
+import MiniCard from '../components/MiniCard'
+
+const GET_SERIES = gql`
+  query {
+    series {
+      _id
+      title
+      poster_path
+    }
+  }
+`
+
+
 
 export default function SerieScreen(props) {
+    const { loading, error, data } = useQuery(GET_SERIES)
+    const [search, setSearch] = useState('')
 
+    const renderSeries = () => {
+        if (loading) return <Text>Loading...</Text>
+        else if (error) return <Text>Something went wrong</Text>
+        else if (data.series.length === 0) return <Text>Serie kosong</Text>
+        else return (
+            <FlatList
+                numColumns={2}
+                data={data.series}
+                renderItem={({ item }) => <MiniCard name="seri" data={item} />}
+                keyExtractor={(item) => item._id}
+            />
+        )
+    }
 
     return (
         <View>
-            <Card
-                style={{
-                    backgroundColor: '#f0ece2',
-                    margin: 15,
-                    padding: 10,
-                    paddingTop: -10
-                }}
-                accessible={true}
-                onPress={() => Alert.alert('asdas')}
-            >
-                <View>
-                    <Card.Title
-                        titleStyle={styles.text}
-                        subtitleStyle={styles.text}
-                        title="Title disini"
-                        subtitle="tap for more"
-                    // left={(props) => <Avatar.Icon {...props} icon="folder" />}
-                    />
-                    <Text></Text>
-                </View>
-                <Card.Cover
-                    source={{ uri: 'https://picsum.photos/700' }}
-                    style={{ borderRadius: 30 }} />
-                <Paragraph
-                    style={styles.text}
-                >
-                    INI overview nya nanti
-                    trus poster untuk Card.cover
-                    PANAJAJAJAJAJAJAJAAJj
-                    PANAJAJAJAJAJAJAJAAJj
-                    PANAJAJAJAJAJAJAJAAJjPANAJAJAJAJAJAJAJAAJj
-                    </Paragraph>
-                {/* <Text
-                    style={{
-                        color: 'blue',
-                        fontSize: 18,
-                        textAlign: 'right',
-                        marginRight: 10,
-                        marginTop: 10
-                    }}
-                    onPress={() => Alert.alert('masuk')}
-                >
-                    See more >>>
-                </Text> */}
-            </Card>
+            <Searchbar
+                placeholder="Find Series"
+                onChangeText={query => { setSearch(query) }}
+                value={search}
+            />
+            {renderSeries()}
         </View>
     )
 }

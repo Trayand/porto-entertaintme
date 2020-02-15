@@ -10,12 +10,11 @@
       "web"
     ],
     "version": "1.0.0",
-    // "orientation": "landscape",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Layer2.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Layer1.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1b262c"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

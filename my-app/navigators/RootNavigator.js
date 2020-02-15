@@ -12,12 +12,18 @@ const tab1 = () => {
         <Text style={{ color: DarkTheme.colors.text }} >Tab 1</Text>
     </View>
 }
+
+import MovieScreen from '../screen/MovieScreen';
 import SerieScreen from '../screen/SerieScreen';
 
 export default function RootNavigator() {
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="Movies" component={tab1} />
+        <Tab.Navigator tabBarOptions={{
+            swipeEnabled: true,
+            activeTintColor: 'white',
+            inactiveTintColor: 'gray',
+        }}>
+            <Tab.Screen name="Movies" component={MovieScreen} />
             <Tab.Screen name="TV Series" component={SerieScreen} />
         </Tab.Navigator>
     )

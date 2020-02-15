@@ -6,7 +6,7 @@ const { ApolloError } = require('apollo-server')
 const typeDefs = `
     extend type Query {
         series : [Series]
-        seri : Series
+        seri(_id: String) : Series
     }
     
     extend type Mutation {
