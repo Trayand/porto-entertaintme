@@ -1,46 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, StatusBar, TouchableOpacity, Alert } from 'react-native';
 import { Portal, FAB } from 'react-native-paper';
-import { gql } from 'apollo-boost'
-import { useQuery } from '@apollo/react-hooks'
-
-const GET_SERIE = gql`
-query($id: String) {
-    seri(_id: $id) {
-        _id
-        title
-        poster_path
-        overview
-        popularity
-        tags
-    }
-}
-`
-const GET_MOVIE = gql`
-query($id: String) {
-    movie(_id: $id) {
-        _id
-        title
-        poster_path
-        overview
-        popularity
-        tags
-    }
-}
-`
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useNavigation } from '@react-navigation/native';
+import { GET_SERIE, GET_MOVIE, DELETE_MOVIE, DELETE_SERI, GET_MOVIES, GET_SERIES } from '../GraphText'
 
 export default function SerieScreen(props) {
+    const navigation = useNavigation()
     const [showOption, setShowOption] = useState(false)
     const [openIcon, setOpenIcon] = useState(false)
     const { loading, error, data } = useQuery(
         props.route.params.data.asal === 'movie' ? GET_MOVIE : GET_SERIE,
         { variables: { id: props.route.params.data._id } }
     )
+    const [deleteMovie] = useMutation(DELETE_MOVIE)
+    const [deleteSeries] = useMutation(DELETE_SERI)
+
+    const onDelete = (id, asal) => {
+        Alert.alert(
+            `Delete this ${asal} ?`,
+            'this action cannot be undo',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK', onPress: () => {
+                        console.log('OK Pressed')
+                        if (asal === 'movie') {
+                            deleteMovie({ variables: { id: id }, refetchQueries: [{ query: GET_MOVIES }] })
+                        } else {
+                            deleteSeries({ variables: { id: id }, refetchQueries: [{ query: GET_SERIES }] })
+                        }
+                        console.log(data[asal].title);
+                        navigation.goBack()
+                    }
+                },
+            ],
+            { cancelable: false },
+        )
+    }
 
     useEffect(() => {
         props.navigation.setOptions({
             title: props.route.params.data.title,
         })
+        // console.log(props.route, 'ini loh');
     }, [])
 
     const renderSerie = () => {
@@ -77,26 +84,22 @@ export default function SerieScreen(props) {
                     <Text style={styles.popularity} >{data[props.route.params.data.asal].popularity} &#9734;</Text>
                 </View>
                 <Text style={{ color: 'white' }} >{data[props.route.params.data.asal].overview}</Text>
-
-                <Portal >
+                <Portal>
                     <FAB.Group
                         visible={showOption}
                         open={openIcon}
-                        icon={openIcon ? 'window-minimize' : 'library-plus'}
+                        icon={openIcon ? 'window-minimize' : 'plus'}
                         actions={[
-                            { icon: 'star', label: 'Create', onPress: () => console.log('Pressed star') },
-                            { icon: 'email', label: 'Edit', onPress: () => console.log('Pressed email') },
-                            { icon: 'bell', label: 'Delete', onPress: () => console.log('Pressed notifications') },
+                            { icon: 'plus-box', label: 'Create', onPress: () => navigation.push('Create') },
+                            { icon: 'pencil-outline', label: 'Edit', onPress: () => console.log('Pressed email') },
+                            { icon: 'delete', label: 'Delete', onPress: () => onDelete(data[props.route.params.data.asal]._id, props.route.params.data.asal) }
+                            // { icon: 'delete', label: 'Delete', onPress: () => console.log(data[props.route.params.data.asal]._id) }
                         ]}
                         onStateChange={() => setOpenIcon(!openIcon)}
-                        onPress={() => {
-                            if (openIcon) {
-                                // do something if the speed dial is open
-                                console.log('masuk');
-                            }
-                        }}
                     />
                 </Portal>
+
+
             </ScrollView>
         )
     }
@@ -133,3 +136,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     }
 })
+

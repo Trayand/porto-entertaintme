@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Alert, FlatList } from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import { gql } from 'apollo-boost'
+import { Portal, FAB, Searchbar } from 'react-native-paper';
 import { useQuery } from '@apollo/react-hooks'
+import { useNavigation } from '@react-navigation/native';
+import { GET_MOVIES } from '../GraphText'
 
 
 import MiniCard from '../components/MiniCard'
 
 
-const GET_MOVIES = gql`
-  query {
-    movies {
-      _id
-      title
-      poster_path
-    }
-  }
-`
-
-
 
 
 export default function SerieScreen(props) {
+    const navigation = useNavigation()
+    const [showOption, setShowOption] = useState(true)
+    const [openIcon, setOpenIcon] = useState(false)
     const { loading, error, data } = useQuery(GET_MOVIES)
     const [search, setSearch] = useState('')
 
@@ -39,6 +32,23 @@ export default function SerieScreen(props) {
         )
     }
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('blur', () => {
+            setShowOption(false)
+            console.log('masukk blurr');
+        });
+
+        return unsubscribe;
+    }, [navigation])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setShowOption(true)
+        });
+
+        return unsubscribe;
+    }, [navigation])
+
     return (
         <View style={{ paddingBottom: 40 }}>
             <Searchbar
@@ -47,6 +57,20 @@ export default function SerieScreen(props) {
                 value={search}
             />
             {renderMovies()}
+
+            <Portal>
+                <FAB.Group
+                    visible={showOption}
+                    // style={{ backgroundColor: 'yellow', height: 50, width: 50, position: 'absolute', bottom: 50, right: 0 }}
+                    open={openIcon}
+                    icon={openIcon ? 'window-minimize' : 'plus'}
+                    actions={[
+                        { icon: 'plus-box', label: 'Create', onPress: () => navigation.push('Create') },
+                    ]}
+                    onStateChange={() => setOpenIcon(!openIcon)}
+                />
+            </Portal>
+
         </View>
     )
 }
