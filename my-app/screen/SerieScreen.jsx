@@ -22,6 +22,7 @@ export default function SerieScreen(props) {
     const { loading, error, data } = useQuery(GET_SERIES)
     const [search, setSearch] = useState('')
 
+
     const renderSeries = () => {
         if (loading) return <Text>Loading...</Text>
         else if (error) return <Text>Something went wrong</Text>
@@ -29,7 +30,7 @@ export default function SerieScreen(props) {
         else return (
             <FlatList
                 numColumns={2}
-                data={data.series}
+                data={filter(data.series, search)}
                 renderItem={({ item }) => <MiniCard name="seri" data={item} />}
                 keyExtractor={(item) => item._id}
             />
@@ -53,3 +54,6 @@ const styles = StyleSheet.create({
         color: '#393e46'
     }
 })
+const filter = (series, keyword) => {
+    return series.filter(seri => seri.title.toLowerCase().includes(keyword.toLowerCase()))
+}

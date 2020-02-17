@@ -1,12 +1,12 @@
 import ApolloClient, { gql } from 'apollo-boost';
 
 const typeDefs = gql`
-    extend type Query {
-        isLoggedIn: Boolean
-    }
-    extend type Mutation {
-        login: Boolean
-    }
+  extend type Query {
+    isLoggedIn: Boolean
+  }
+  extend type Mutation {
+    login: Boolean
+  }
 `
 const resolvers = {
     Mutation: {
