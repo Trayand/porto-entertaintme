@@ -18,7 +18,7 @@ module.exports = function App() {
         <NavigationContainer theme={MyTheme}>
           <View style={{ height: Constants.statusBarHeight, backgroundColor: 'black' }}></View>
           <View style={styles.container} >
-            <StatusBar barStyle="light-content" backgroundColor="#6a51ae" />
+            {/* <StatusBar barStyle="light-content" backgroundColor="#6a51ae" /> */}
             <StackNavigator />
           </View>
         </NavigationContainer>
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
-    // marginTop: Constants.statusBarHeight
+    // paddingBottom: Constants.statusBarHeight
   },
 });
 

@@ -41,26 +41,43 @@ export default function SerieScreen(props) {
     }, [])
 
     const renderSerie = () => {
-        console.log(data, 'ini loh');
+        // console.log(data, 'ini loh');
         if (loading) return <Text>Loading...</Text>
         else if (error) return <Text>Something went wrong</Text>
         else return (
             <View>
-                <Text style={{ color: 'white' }} >{data[props.route.params.data.asal].title}</Text>
+                <View style={{ flexDirection: 'row' }} >
+                    <Image source={{
+                        uri: props.route.params.data.poster_path
+                    }}
+                        style={{
+                            width: 200,
+                            height: 250,
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            resizeMode: "contain"
+                        }}
+                    />
+                    <View>
+                        <Text style={{ color: 'white' }} >{data[props.route.params.data.asal].title}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            {
+                                data[props.route.params.data.asal].tags.map((tag, i) => <Text key={i} style={{ color: 'white', marginHorizontal: 3 }} >{tag}</Text>)
+                            }
+                        </View>
+                        <Text style={{ color: 'white' }} >{data[props.route.params.data.asal].popularity} &#9734;</Text>
+                    </View>
+                </View>
                 <Text style={{ color: 'white' }} >{data[props.route.params.data.asal].overview}</Text>
                 <Text style={{ color: 'white' }} >{data[props.route.params.data.asal].poster_path}</Text>
-                <Text style={{ color: 'white' }} >{data[props.route.params.data.asal].popularity}</Text>
-                {
-                    data[props.route.params.data.asal].tags.map(tag => <Text style={{ color: 'white' }} >{tag}</Text>)
-                }
                 {/* <Text style={{ color: 'white' }} >{JSON.stringify(data)}</Text> */}
             </View>
         )
     }
 
     return (
-        <View>
-            <Image source={{
+        <View style={{ padding: 10 }} >
+            {/* <Image source={{
                 uri: props.route.params.data.poster_path
             }}
                 style={{
@@ -68,11 +85,10 @@ export default function SerieScreen(props) {
                     height: 250,
                     marginLeft: 'auto',
                     marginRight: 'auto',
-                    marginTop: 10,
                     resizeMode: "contain"
                 }}
-            />
-            <Text style={styles.text}>{props.route.params.data.title}</Text>
+            /> */}
+            {/* <Text style={styles.text}>{props.route.params.data.title}</Text> */}
             {/* <Text style={{ color: 'white' }}>{JSON.stringify(props.route.params.data)}</Text> */}
             {renderSerie()}
         </View>

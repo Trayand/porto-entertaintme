@@ -24,6 +24,7 @@ const GET_MOVIES = gql`
 export default function SerieScreen(props) {
     const { loading, error, data } = useQuery(GET_MOVIES)
     const [search, setSearch] = useState('')
+    const [moviesData, setMoviesData] = useState([])
 
     const renderMovies = () => {
         if (loading) return <Text>Loading...</Text>
@@ -32,15 +33,20 @@ export default function SerieScreen(props) {
         else return (
             <FlatList
                 numColumns={2}
-                data={data.movies}
+                data={moviesData}
                 renderItem={({ item }) => <MiniCard name="movie" data={item} />}
                 keyExtractor={(item) => item._id}
             />
         )
     }
 
+    useEffect(() => {
+        if (data?.movies) console.log(data.movies);
+        if (data?.movies) setMoviesData(data.movies)
+    }, [data])
+
     return (
-        <View>
+        <View style={{ paddingBottom: 40 }}>
             <Searchbar
                 placeholder="Find Movies"
                 onChangeText={query => { setSearch(query) }}

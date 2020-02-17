@@ -37,7 +37,7 @@ export default function SerieScreen(props) {
     }
 
     return (
-        <View>
+        <View style={{ paddingBottom: 40 }}>
             <Searchbar
                 placeholder="Find Series"
                 onChangeText={query => { setSearch(query) }}

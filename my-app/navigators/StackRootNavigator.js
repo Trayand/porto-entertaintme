@@ -20,7 +20,7 @@ export default function StackRootNavigator(props) {
                 name="detail"
                 component={DetailScreen}
                 options={{
-                    headerTitleAlign: 'center'
+                    headerTitleAlign: 'center',
                 }}
             />
         </Stack.Navigator>

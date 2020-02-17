@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function MiniCard(props) {
     const navigation = useNavigation()
-    console.log(props.data, ' ini data dari ' + props.name);
+    // console.log(props.data, ' ini data dari ' + props.name);
     return (
         <Card
             style={{
