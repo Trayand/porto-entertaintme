@@ -48,9 +48,9 @@ export default function SerieScreen(props) {
                     text: 'OK', onPress: () => {
                         console.log('OK Pressed')
                         if (asal === 'movie') {
-                            deleteMovie({ variables: { id: id }, refetchQueries: [{ query: GET_MOVIE, variables: { id: id } }] })
+                            deleteMovie({ variables: { id: id }, refetchQueries: [{ query: GET_MOVIES }] })
                         } else {
-                            deleteSeries({ variables: { id: id }, refetchQueries: [{ query: GET_SERIE, variables: { id: id } }] })
+                            deleteSeries({ variables: { id: id }, refetchQueries: [{ query: GET_SERIES }] })
                         }
                         console.log(data[asal].title);
                         navigation.goBack()
