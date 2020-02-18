@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, StatusBar, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, StatusBar, TouchableOpacity, Alert, Dimensions } from 'react-native';
 import { Portal, FAB } from 'react-native-paper';
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { useNavigation } from '@react-navigation/native';
 import { GET_SERIE, GET_MOVIE, DELETE_MOVIE, DELETE_SERI, GET_MOVIES, GET_SERIES } from '../GraphText'
+import ImageZoom from 'react-native-image-pan-zoom';
 
 export default function SerieScreen(props) {
     const navigation = useNavigation()
@@ -73,17 +74,22 @@ export default function SerieScreen(props) {
         else return (
             <ScrollView>
                 <StatusBar hidden={true} />
-                <View style={{ flexDirection: 'row' }} >
-                    <Image source={{
-                        uri: props.route.params.data.poster_path
-                    }}
-                        style={{
-                            width: 180,
-                            height: 230,
-                            resizeMode: "contain",
-                            flex: 1,
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
+                    <ImageZoom cropWidth={Dimensions.get('window').width}
+                        cropHeight={Dimensions.get('window').height * 0.3}
+                        imageWidth={180}
+                        imageHeight={230}>
+                        <Image source={{
+                            uri: props.route.params.data.poster_path
                         }}
-                    />
+                            style={{
+                                width: 180,
+                                height: 230,
+                                resizeMode: "contain",
+                                flex: 1,
+                            }}
+                        />
+                    </ImageZoom>
                 </View>
                 <View style={{ flexDirection: 'row' }} >
                     <Text style={{ color: 'white', fontSize: 27, marginTop: 15, flex: 5 }} >{data[props.route.params.data.asal].title}</Text>

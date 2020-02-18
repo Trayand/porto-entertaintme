@@ -9,18 +9,18 @@ const typeDefs = gql`
   }
 `
 const resolvers = {
-    Mutation: {
-        login: (parent, args, { cache }) => {
-            cache.writeData({ data: { isLoggedIn: true } })
-            return true
-        }
+  Mutation: {
+    login: (parent, args, { cache }) => {
+      cache.writeData({ data: { isLoggedIn: true } })
+      return true
     }
+  }
 }
 
 const client = new ApolloClient({
-    uri: 'http://localhost:4000',
-    resolvers,
-    typeDefs
+  uri: 'http://3.1.6.160:4000',
+  resolvers,
+  typeDefs
 })
 
 client.writeData({ data: { isLoggedIn: false } })
