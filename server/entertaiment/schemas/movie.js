@@ -1,6 +1,7 @@
 const axios = require('axios')
 let local = 'http://localhost:3001'
 const redis = require('../config/redis')
+const { ApolloError } = require('apollo-server')
 
 const typeDefs = `
     extend type Query {
@@ -48,22 +49,25 @@ const resolvers = {
 
                 return data
             } catch (error) {
-                throw new ApolloError('Something wrong when get all movies')
+                throw new ApolloError(error)
             }
         },
         movie: async (parent, args) => {
+            console.log(args)
             try {
                 let movie = await redis.hget('movies', args._id)
                 if (movie) return JSON.parse(movie)
 
                 const { data } = await axios.get(`${local}/${args._id}`)
 
-                redis.hset('movies', args._id, JSON.stringify(data))
-                redis.expire('movies', 86400)
+                if (data) {
+                    redis.hset('movies', args._id, JSON.stringify(data))
+                    redis.expire('movies', 86400)
+                }
 
                 return data
             } catch (error) {
-                throw new ApolloError('Something wrong when get movie')
+                throw new ApolloError(error)
             }
         }
     },
@@ -83,7 +87,7 @@ const resolvers = {
 
                 return data
             } catch (error) {
-                throw new ApolloError('Something wrong when create movie')
+                throw new ApolloError(error)
             }
         },
         updateMovie: async (parent, args) => {
@@ -98,7 +102,7 @@ const resolvers = {
 
                 return data
             } catch (error) {
-                throw new ApolloError('Something wrong when update movie')
+                throw new ApolloError(error)
             }
         },
         deleteMovie: async (parent, args) => {
@@ -113,7 +117,7 @@ const resolvers = {
                     message: `movie with id ${args._id} deleted`
                 }
             } catch (error) {
-                throw new ApolloError('Something wrong when delete movie')
+                throw new ApolloError(error)
             }
         }
     }

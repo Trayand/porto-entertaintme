@@ -64,6 +64,10 @@ mutation($title: String, $overview: String, $poster_path: String, $popularity: I
   createMovie(title: $title, overview: $overview, poster_path: $poster_path, popularity: $popularity, tags: $tags){
     _id
     title
+    poster_path
+    overview
+    popularity
+    tags
   }
 }
 `
@@ -71,6 +75,28 @@ mutation($title: String, $overview: String, $poster_path: String, $popularity: I
 export const CREATE_SERIE = gql`
 mutation($title: String, $overview: String, $poster_path: String, $popularity: Int, $tags: [String]) {
   createSeries(title: $title, overview: $overview, poster_path: $poster_path, popularity: $popularity, tags: $tags){
+     _id
+    title
+    poster_path
+    overview
+    popularity
+    tags
+  }
+}
+`
+
+export const UPDATE_MOVIE = gql`
+mutation($id: String, $title: String, $overview: String, $poster_path: String, $popularity: Int, $tags: [String]) {
+  updateMovie(_id: $id, title: $title, overview: $overview, poster_path: $poster_path, popularity: $popularity, tags: $tags){
+    _id
+    title
+  }
+}
+`
+
+export const UPDATE_SERIE = gql`
+mutation($id: String, $title: String, $overview: String, $poster_path: String, $popularity: Int, $tags: [String]) {
+  updateSeries(_id: $id, title: $title, overview: $overview, poster_path: $poster_path, popularity: $popularity, tags: $tags){
     _id
     title
   }

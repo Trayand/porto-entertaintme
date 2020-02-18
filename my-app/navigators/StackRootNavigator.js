@@ -12,6 +12,7 @@ const Stack = createStackNavigator()
 import RootNavigator from './RootNavigator'
 import DetailScreen from '../screen/DetailScreen';
 import CreateScreen from '../screen/CreateScreen';
+import EditScreen from '../screen/EditScreen';
 
 export default function StackRootNavigator(props) {
     return (
@@ -36,6 +37,16 @@ export default function StackRootNavigator(props) {
             <Stack.Screen
                 name="Create"
                 component={CreateScreen}
+                options={{
+                    headerTitleAlign: 'center',
+                    headerStyle: { backgroundColor: '#190061' },
+                    headerTintColor: 'white',
+                    headerTitleStyle: { fontWeight: 'bold' },
+                }}
+            />
+            <Stack.Screen
+                name="Edit"
+                component={EditScreen}
                 options={{
                     headerTitleAlign: 'center',
                     headerStyle: { backgroundColor: '#190061' },

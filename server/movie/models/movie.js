@@ -13,10 +13,10 @@ const movieSchema = new Schema({
         type: String,
         required: true
     },
-    youtube: {
-        type: String,
-        required: true
-    },
+    // youtube: {
+    //     type: String,
+    //     required: true
+    // },
     popularity: {
         type: Number,
         required: true

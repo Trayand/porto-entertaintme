@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, Dimensions, KeyboardAvoidingView, Alert } from 'react-native';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Dimensions, KeyboardAvoidingView, Alert } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { TextInput, Button } from 'react-native-paper';
 import TagInput from 'react-native-tags-input';
 import { useMutation } from '@apollo/react-hooks';
-import { CREATE_MOVIE, CREATE_SERIE, GET_MOVIES, GET_SERIES } from '../GraphText'
+import { UPDATE_MOVIE, UPDATE_SERIE, GET_MOVIES, GET_MOVIE, GET_SERIES } from '../GraphText'
 import { useNavigation } from '@react-navigation/native';
 
 
 export default function CreateScreen(props) {
     const navigation = useNavigation()
-    const [createMovie] = useMutation(CREATE_MOVIE)
-    const [createSeries] = useMutation(CREATE_SERIE)
+    const [updateMovie] = useMutation(UPDATE_MOVIE)
+    const [updateSeries] = useMutation(UPDATE_SERIE)
 
-    const [checked, setChecked] = useState('first')
 
     const [Title, setTitle] = useState('')
     const [url, setUrl] = useState('')
@@ -30,6 +29,18 @@ export default function CreateScreen(props) {
     const updateTagState = (state) => {
         setTags(state)
     };
+    // console.log(props.route.params);
+    useEffect(() => {
+        let dataku = props.route.params
+        setTitle(dataku.title)
+        setUrl(dataku.poster_path)
+        setOverview(dataku.overview)
+        setPopularity(dataku.popularity.toString())
+        setTags({
+            tag: '',
+            tagsArray: dataku.tags
+        })
+    }, [])
 
 
     const runSubmit = () => {
@@ -44,22 +55,19 @@ export default function CreateScreen(props) {
             return
         }
 
-        if (checked === 'first') {
-            createMovie({
+        if (props.route.params.asal === 'movie') {
+            updateMovie({
                 variables: {
+                    id: props.route.params._id,
                     title: Title,
                     poster_path: url,
                     popularity: Number(popularity),
                     overview,
                     tags: tags.tagsArray
                 },
-                update: (cache, { data }) => {
-                    const cacheData = cache.readQuery({ query: GET_MOVIES })
-                    cache.writeQuery({
-                        query: GET_MOVIES,
-                        data: { movies: cacheData.movies.concat([data.createMovie]) }
-                    })
-                }
+                refetchQueries: [
+                    { query: GET_MOVIE, variables: { id: props.route.params._id } }
+                ]
             })
                 .then((result) => {
                     setTitle('')
@@ -75,21 +83,15 @@ export default function CreateScreen(props) {
                     console.log(err)
                 });
         } else {
-            createSeries({
+            updateSeries({
                 variables: {
+                    id: props.route.params._id,
                     title: Title,
                     poster_path: url,
                     popularity: Number(popularity),
                     overview,
                     tags: tags.tagsArray
-                },
-                update: (cache, { data }) => {
-                    const cacheData = cache.readQuery({ query: GET_SERIES })
-                    cache.writeQuery({
-                        query: GET_SERIES,
-                        data: { series: cacheData.series.concat([data.createSeries]) }
-                    })
-                }
+                }, refetchQueries: [{ query: GET_SERIES }]
             })
                 .then((result) => {
                     setTitle('')
@@ -111,18 +113,6 @@ export default function CreateScreen(props) {
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
             <ScrollView contentContainerStyle={{ padding: 20 }}>
                 <View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 15 }} >
-                        <TouchableOpacity style={checked === 'first' ? styles.pressed : styles.TouchBtn}
-                            onPress={() => setChecked('first')}
-                        >
-                            <Text style={{ color: 'white' }} >Movie</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={checked === 'second' ? styles.pressed : styles.TouchBtn}
-                            onPress={() => setChecked('second')}
-                        >
-                            <Text style={{ color: 'white' }} >TV Series</Text>
-                        </TouchableOpacity>
-                    </View>
 
                     <TextInput
                         label='Title'

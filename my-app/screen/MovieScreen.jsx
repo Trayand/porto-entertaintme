@@ -11,7 +11,7 @@ import MiniCard from '../components/MiniCard'
 
 
 
-export default function SerieScreen(props) {
+export default function MovieScreen(props) {
     const navigation = useNavigation()
     const [showOption, setShowOption] = useState(true)
     const [openIcon, setOpenIcon] = useState(false)
@@ -19,6 +19,7 @@ export default function SerieScreen(props) {
     const [search, setSearch] = useState('')
 
     const renderMovies = () => {
+        // console.log(data, 'DATA')
         if (loading) return <Text>Loading...</Text>
         else if (error) return <Text>Something went wrong</Text>
         else if (data.movies.length === 0) return <Text>Movie kosong</Text>
@@ -35,7 +36,7 @@ export default function SerieScreen(props) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('blur', () => {
             setShowOption(false)
-            console.log('masukk blurr');
+            // console.log('masukk blurr');
         });
 
         return unsubscribe;

@@ -7,7 +7,7 @@ import { GET_SERIE, GET_MOVIE, DELETE_MOVIE, DELETE_SERI, GET_MOVIES, GET_SERIES
 
 export default function SerieScreen(props) {
     const navigation = useNavigation()
-    const [showOption, setShowOption] = useState(false)
+    const [showOption, setShowOption] = useState(true)
     const [openIcon, setOpenIcon] = useState(false)
     const { loading, error, data } = useQuery(
         props.route.params.data.asal === 'movie' ? GET_MOVIE : GET_SERIE,
@@ -15,6 +15,23 @@ export default function SerieScreen(props) {
     )
     const [deleteMovie] = useMutation(DELETE_MOVIE)
     const [deleteSeries] = useMutation(DELETE_SERI)
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('blur', () => {
+            setShowOption(false)
+            // console.log('masukk blurr');
+        });
+
+        return unsubscribe;
+    }, [navigation])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setShowOption(true)
+        });
+
+        return unsubscribe;
+    }, [navigation])
 
     const onDelete = (id, asal) => {
         Alert.alert(
@@ -30,9 +47,9 @@ export default function SerieScreen(props) {
                     text: 'OK', onPress: () => {
                         console.log('OK Pressed')
                         if (asal === 'movie') {
-                            deleteMovie({ variables: { id: id }, refetchQueries: [{ query: GET_MOVIES }] })
+                            deleteMovie({ variables: { id: id }, refetchQueries: [{ query: GET_MOVIE, variables: { id: id } }] })
                         } else {
-                            deleteSeries({ variables: { id: id }, refetchQueries: [{ query: GET_SERIES }] })
+                            deleteSeries({ variables: { id: id }, refetchQueries: [{ query: GET_SERIE, variables: { id: id } }] })
                         }
                         console.log(data[asal].title);
                         navigation.goBack()
@@ -91,7 +108,7 @@ export default function SerieScreen(props) {
                         icon={openIcon ? 'window-minimize' : 'plus'}
                         actions={[
                             { icon: 'plus-box', label: 'Create', onPress: () => navigation.push('Create') },
-                            { icon: 'pencil-outline', label: 'Edit', onPress: () => console.log('Pressed email') },
+                            { icon: 'pencil-outline', label: 'Edit', onPress: () => navigation.push('Edit', { ...data[props.route.params.data.asal], asal: props.route.params.data.asal }) },
                             { icon: 'delete', label: 'Delete', onPress: () => onDelete(data[props.route.params.data.asal]._id, props.route.params.data.asal) }
                             // { icon: 'delete', label: 'Delete', onPress: () => console.log(data[props.route.params.data.asal]._id) }
                         ]}
