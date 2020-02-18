@@ -24,6 +24,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Loyalfox-2019 Hacktiv8 Entertaint Me",
+    "githubUrl": "https://github.com/Trayand/entertainme"
   }
 }
