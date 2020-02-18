@@ -21,11 +21,14 @@ export default function RootNavigator() {
     return (
         <>
             <View style={{ height: Constants.statusBarHeight, backgroundColor: 'black' }}></View>
-            <Tab.Navigator tabBarOptions={{
-                swipeEnabled: true,
-                activeTintColor: 'white',
-                inactiveTintColor: 'gray',
-            }}>
+            <Tab.Navigator
+                lazy={true}
+                tabBarOptions={{
+                    swipeEnabled: true,
+                    activeTintColor: 'white',
+                    inactiveTintColor: 'gray',
+                }}
+            >
                 <Tab.Screen name="Movies" component={MovieScreen} />
                 <Tab.Screen name="TV Series" component={SerieScreen} />
             </Tab.Navigator>

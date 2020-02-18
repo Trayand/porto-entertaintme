@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Alert, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Alert, FlatList, Dimensions } from 'react-native';
 import { Portal, FAB, Searchbar } from 'react-native-paper';
 import { useQuery } from '@apollo/react-hooks'
 import { useNavigation } from '@react-navigation/native';
@@ -50,7 +50,11 @@ export default function SerieScreen(props) {
     }, [navigation])
 
     return (
-        <View style={{ paddingBottom: 40 }}>
+        <View style={{
+            paddingBottom: 40,
+            height: Dimensions.get('window').height,
+            width: Dimensions.get('window').width
+        }}>
             <Searchbar
                 placeholder="Find Movies"
                 onChangeText={query => { setSearch(query) }}
@@ -61,7 +65,6 @@ export default function SerieScreen(props) {
             <Portal>
                 <FAB.Group
                     visible={showOption}
-                    // style={{ backgroundColor: 'yellow', height: 50, width: 50, position: 'absolute', bottom: 50, right: 0 }}
                     open={openIcon}
                     icon={openIcon ? 'window-minimize' : 'plus'}
                     actions={[

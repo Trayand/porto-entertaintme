@@ -58,3 +58,21 @@ mutation($id: String) {
     }
 }
 `
+
+export const CREATE_MOVIE = gql`
+mutation($title: String, $overview: String, $poster_path: String, $popularity: Int, $tags: [String]) {
+  createMovie(title: $title, overview: $overview, poster_path: $poster_path, popularity: $popularity, tags: $tags){
+    _id
+    title
+  }
+}
+`
+
+export const CREATE_SERIE = gql`
+mutation($title: String, $overview: String, $poster_path: String, $popularity: Int, $tags: [String]) {
+  createSeries(title: $title, overview: $overview, poster_path: $poster_path, popularity: $popularity, tags: $tags){
+    _id
+    title
+  }
+}
+`

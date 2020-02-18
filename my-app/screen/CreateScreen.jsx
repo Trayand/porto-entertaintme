@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import { TextInput } from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
 import TagInput from 'react-native-tags-input';
+import { useMutation } from '@apollo/react-hooks';
+import { CREATE_MOVIE, CREATE_SERIE } from '../GraphText'
 
 export default function CreateScreen(props) {
+    const [createMovie] = useMutation(CREATE_MOVIE)
+    const [createSeries] = useMutation(CREATE_SERIE)
+
     const [checked, setChecked] = useState('first')
 
-    const [Title, setTitle] = useState('')
+    const [Title, setTitle] = useState('coba')
     const [url, setUrl] = useState('')
     const [popularity, setPopularity] = useState('')
     const [overview, setOverview] = useState('')
@@ -25,9 +30,14 @@ export default function CreateScreen(props) {
     };
 
 
+    const runSubmit = () => {
+        console.log('coba masuk');
+        TextInput.clear()
+    }
+
     return (
-        <ScrollView style={{ padding: 20 }}>
-            <KeyboardAvoidingView behavior="padding" enabled keyboardVerticalOffset={20} >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled >
+            <ScrollView contentContainerStyle={{ padding: 20 }}>
                 <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 15 }} >
                         <TouchableOpacity style={checked === 'first' ? styles.pressed : styles.TouchBtn}
@@ -46,6 +56,7 @@ export default function CreateScreen(props) {
                         label='Title'
                         value={Title}
                         onChangeText={text => setTitle(text)}
+
                     />
                     <TextInput
                         label="Poster's URL"
@@ -91,10 +102,12 @@ export default function CreateScreen(props) {
                         multiline={true}
                         numberOfLines={10}
                     />
-
+                    <Button icon="gnome" mode="contained" style={{ marginTop: 10, backgroundColor: 'white' }} onPress={() => runSubmit}>
+                        Submit
+                    </Button>
                 </View>
-            </KeyboardAvoidingView>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 
