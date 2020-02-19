@@ -10,8 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function CreateScreen(props) {
     const navigation = useNavigation()
-    const [updateMovie] = useMutation(UPDATE_MOVIE)
-    const [updateSeries] = useMutation(UPDATE_SERIE)
+    const [updateMovie, { loading: movieLoad }] = useMutation(UPDATE_MOVIE)
+    const [updateSeries, { loading: seriLoad }] = useMutation(UPDATE_SERIE)
 
 
     const [Title, setTitle] = useState('')
@@ -80,7 +80,8 @@ export default function CreateScreen(props) {
                     })
                     navigation.goBack()
                 }).catch((err) => {
-                    console.log(err)
+                    Alert.alert(err)
+                    // console.log(err)
                 });
         } else {
             updateSeries({
@@ -104,7 +105,8 @@ export default function CreateScreen(props) {
                     })
                     navigation.goBack()
                 }).catch((err) => {
-                    console.log(err)
+                    Alert.alert(err)
+                    // console.log(err)
                 });
         }
     }
@@ -112,6 +114,13 @@ export default function CreateScreen(props) {
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
             <ScrollView contentContainerStyle={{ padding: 20 }}>
+                {
+                    (movieLoad || seriLoad)
+                    && <View style={styles.screenUp}>
+                        <Image style={{ width: 200, height: 200 }} source={loadingGif} fadeDuration={0} />
+                        {/* <ActivityIndicator size={100} color="#0000ff" /> */}
+                    </View>
+                }
                 <View>
 
                     <TextInput
@@ -208,4 +217,13 @@ const styles = StyleSheet.create({
     tagText: {
         color: '#3ca897'
     },
+    screenUp: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        backgroundColor: 'rgba(56,56,56,0.2)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: -20,
+        zIndex: 10
+    }
 })

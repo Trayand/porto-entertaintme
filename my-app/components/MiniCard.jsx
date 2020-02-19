@@ -13,7 +13,8 @@ export default function MiniCard(props) {
                 margin: 15,
                 padding: 10,
                 paddingTop: -10,
-                width: 150
+                width: 150,
+                borderWidth: 0,
             }}
             accessible={true}
             onPress={() => navigation.push('detail', { data: { ...props.data, asal: props.name } })}

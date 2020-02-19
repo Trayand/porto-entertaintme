@@ -25,6 +25,7 @@ export default function MovieScreen(props) {
         else if (data.movies.length === 0) return <Text>Movie kosong</Text>
         else return (
             <FlatList
+                contentContainerStyle={{ marginLeft: 'auto', marginRight: "auto" }}
                 numColumns={2}
                 data={filter(data.movies, search)}
                 renderItem={({ item }) => <MiniCard name="movie" data={item} />}

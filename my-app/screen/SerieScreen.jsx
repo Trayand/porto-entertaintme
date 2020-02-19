@@ -38,6 +38,7 @@ export default function SerieScreen(props) {
         else if (data.series.length === 0) return <Text>Serie kosong</Text>
         else return (
             <FlatList
+                contentContainerStyle={{ marginLeft: 'auto', marginRight: "auto" }}
                 numColumns={2}
                 data={filter(data.series, search)}
                 renderItem={({ item }) => <MiniCard name="seri" data={item} />}

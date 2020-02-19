@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Dimensions, KeyboardAvoidingView, Alert } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, KeyboardAvoidingView, Alert, Image } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import TagInput from 'react-native-tags-input';
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_MOVIE, CREATE_SERIE, GET_MOVIES, GET_SERIES } from '../GraphText'
 import { useNavigation } from '@react-navigation/native';
-
+import loadingGif from '../assets/loading.gif'
 
 export default function CreateScreen(props) {
     const navigation = useNavigation()
-    const [createMovie] = useMutation(CREATE_MOVIE)
-    const [createSeries] = useMutation(CREATE_SERIE)
+    const [createMovie, { loading: movieLoad }] = useMutation(CREATE_MOVIE)
+    const [createSeries, { loading: seriLoad }] = useMutation(CREATE_SERIE)
 
     const [checked, setChecked] = useState('first')
 
@@ -72,7 +72,8 @@ export default function CreateScreen(props) {
                     })
                     navigation.goBack()
                 }).catch((err) => {
-                    console.log(err)
+                    // console.log(err)
+                    Alert.alert(err)
                 });
         } else {
             createSeries({
@@ -102,13 +103,21 @@ export default function CreateScreen(props) {
                     })
                     navigation.goBack()
                 }).catch((err) => {
-                    console.log(err)
+                    // console.log(err)
+                    Alert.alert(err)
                 });
         }
     }
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+            {
+                (movieLoad || seriLoad)
+                && <View style={styles.screenUp}>
+                    <Image style={{ width: 200, height: 200 }} source={loadingGif} fadeDuration={0} />
+                    {/* <ActivityIndicator size={100} color="#0000ff" /> */}
+                </View>
+            }
             <ScrollView contentContainerStyle={{ padding: 20 }}>
                 <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 15 }} >
@@ -218,4 +227,13 @@ const styles = StyleSheet.create({
     tagText: {
         color: '#3ca897'
     },
+    screenUp: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        backgroundColor: 'rgba(56,56,56,0.2)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: -20,
+        zIndex: 10
+    }
 })

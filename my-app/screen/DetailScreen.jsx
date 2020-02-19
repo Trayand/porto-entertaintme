@@ -46,13 +46,13 @@ export default function SerieScreen(props) {
                 },
                 {
                     text: 'OK', onPress: () => {
-                        console.log('OK Pressed')
+                        // console.log('OK Pressed')
                         if (asal === 'movie') {
                             deleteMovie({ variables: { id: id }, refetchQueries: [{ query: GET_MOVIES }] })
                         } else {
                             deleteSeries({ variables: { id: id }, refetchQueries: [{ query: GET_SERIES }] })
                         }
-                        console.log(data[asal].title);
+                        // console.log(data[asal].title);
                         navigation.goBack()
                     }
                 },
