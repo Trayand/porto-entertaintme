@@ -1,4 +1,4 @@
-import ApolloClient, { gql } from 'apollo-boost';
+import ApolloClient, { gql } from "apollo-boost";
 
 const typeDefs = gql`
   extend type Query {
@@ -7,22 +7,22 @@ const typeDefs = gql`
   extend type Mutation {
     login: Boolean
   }
-`
+`;
 const resolvers = {
   Mutation: {
     login: (parent, args, { cache }) => {
-      cache.writeData({ data: { isLoggedIn: true } })
-      return true
-    }
-  }
-}
+      cache.writeData({ data: { isLoggedIn: true } });
+      return true;
+    },
+  },
+};
 
 const client = new ApolloClient({
-  uri: 'http://3.1.6.160:4000',
+  uri: "http://192.168.43.117:4000/",
   resolvers,
-  typeDefs
-})
+  typeDefs,
+});
 
-client.writeData({ data: { isLoggedIn: false } })
+client.writeData({ data: { isLoggedIn: false } });
 
-export default client
+export default client;

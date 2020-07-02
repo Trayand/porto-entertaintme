@@ -4402,6 +4402,11 @@ react-native-gesture-handler@~1.5.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-image-pan-zoom@^2.1.11:
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/react-native-image-pan-zoom/-/react-native-image-pan-zoom-2.1.12.tgz#eb98bf56fb5610379bdbfdb63219cc1baca98fd2"
+  integrity sha512-BF66XeP6dzuANsPmmFsJshM2Jyh/Mo1t8FsGc1L9Q9/sVP8MJULDabB1hms+eAoqgtyhMr5BuXV3E1hJ5U5H6Q==
+
 react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
@@ -4444,6 +4449,13 @@ react-native-tab-view@^2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.13.0.tgz#23037aa43b0f8f682ddc20415a4baaaf6f82ae8f"
   integrity sha512-AeYbp/u91+D/C9+PmVEPBmFb3ixv8IkLMC3Sc5MajJ/fg0Zl3Of+BcEknBvTnKoe7Fj2y8+Qf9zorBbh5xzh4A==
+
+react-native-tags-input@^1.0.7:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/react-native-tags-input/-/react-native-tags-input-1.0.10.tgz#84f3f3f208d5dffa1ba77ff4a7ff8eaa9539d523"
+  integrity sha512-0uaHZXGZssBpdkYgW/eakk0sa6elVuYAPQePAc617MugoHj3uJtKchMEXe4rf20sKbLKvOnbWV8ku95yyQwkMw==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-view-shot@3.0.2:
   version "3.0.2"
