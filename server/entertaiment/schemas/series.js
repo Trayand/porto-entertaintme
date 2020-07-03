@@ -1,5 +1,5 @@
 const axios = require("axios");
-let local = "http://localhost:4002";
+let local = "http://54.254.202.17:4002";
 const redis = require("../config/redis");
 const { ApolloError } = require("apollo-server");
 
