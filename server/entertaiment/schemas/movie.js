@@ -31,6 +31,7 @@ const resolvers = {
       try {
         let moviesCount = await redis.scard("moviesCount");
         if (moviesCount > 0) {
+          console.log(moviesCount, "- moviesCountHere");
           const movies = await redis.hvals("movies");
           return movies.map(JSON.parse);
         }
@@ -42,10 +43,10 @@ const resolvers = {
         }, []);
 
         redis.hset("movies", ...movies);
-        redis.expire("movies", 86400);
+        redis.expire("movies", 3600);
 
         redis.sadd("moviesCount", ...data.map((t) => t._id));
-        redis.expire("moviesCount", 86400);
+        redis.expire("moviesCount", 3600);
 
         return data;
       } catch (error) {
@@ -62,7 +63,7 @@ const resolvers = {
 
         if (data) {
           redis.hset("movies", args._id, JSON.stringify(data));
-          redis.expire("movies", 86400);
+          redis.expire("movies", 3600);
         }
 
         return data;
@@ -77,12 +78,12 @@ const resolvers = {
         const { data } = await axios.post(local, { ...args });
 
         redis.hset("movies", data._id, JSON.stringify(data));
-        redis.expire("movies", 86400);
+        redis.expire("movies", 3600);
 
         const moviesCount = await redis.scard("moviesCount");
         if (moviesCount > 0) {
           redis.sadd("moviesCount", data._id);
-          redis.expire("moviesCount", 86400);
+          redis.expire("moviesCount", 3600);
         }
 
         return data;
@@ -95,10 +96,10 @@ const resolvers = {
         const { data } = await axios.put(`${local}/${args._id}`, { ...args });
 
         redis.hset("movies", data._id, JSON.stringify(data));
-        redis.expire("movies", 86400);
+        redis.expire("movies", 3600);
 
         redis.sadd("moviesCount", data._id);
-        redis.expire("moviesCount", 86400);
+        redis.expire("moviesCount", 3600);
 
         return data;
       } catch (error) {

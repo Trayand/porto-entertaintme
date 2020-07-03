@@ -42,13 +42,13 @@ const resolvers = {
         }, []);
 
         redis.hset("series", ...series);
-        redis.expire("series", 86400);
+        redis.expire("series", 3600);
 
         redis.sadd(
           "seriesCount",
           series.map((t) => t._id)
         );
-        redis.expire("seriesCount", 86400);
+        redis.expire("seriesCount", 3600);
 
         return data;
       } catch (error) {
@@ -68,7 +68,7 @@ const resolvers = {
         const seriesCount = await redis.scard("seriesCount");
         if (seriesCount > 0) {
           redis.sadd("seriesCount", data._id);
-          redis.expire("seriesCount", 86400);
+          redis.expire("seriesCount", 3600);
         }
 
         return data;
@@ -83,12 +83,12 @@ const resolvers = {
         const { data } = await axios.post(local, { ...args });
 
         redis.hset("series", data._id, JSON.stringify(data));
-        redis.expire("series", 86400);
+        redis.expire("series", 3600);
 
         const seriesCount = await redis.scard("seriesCount");
         if (seriesCount > 0) {
           redis.sadd("seriesCount", data._id);
-          redis.expire("seriesCount", 86400);
+          redis.expire("seriesCount", 3600);
         }
         return data;
       } catch (error) {
@@ -100,10 +100,10 @@ const resolvers = {
         const { data } = await axios.put(`${local}/${args._id}`, { ...args });
 
         redis.hset("series", args._id, JSON.stringify(data));
-        redis.expire("series", 86400);
+        redis.expire("series", 3600);
 
         redis.sadd("seriesCount", args._id);
-        redis.expire("seriesCount", 86400);
+        redis.expire("seriesCount", 3600);
 
         return data;
       } catch (error) {
