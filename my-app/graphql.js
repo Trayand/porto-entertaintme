@@ -19,7 +19,7 @@ const resolvers = {
 
 const client = new ApolloClient({
   // uri: "http://192.168.43.117:4000/",
-  uri: "http://172.31.36.154:4000/",
+  uri: "http://54.254.202.17:4000/",
   resolvers,
   typeDefs,
 });

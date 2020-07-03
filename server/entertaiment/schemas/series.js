@@ -35,7 +35,7 @@ const resolvers = {
           return series.map(JSON.parse);
         }
 
-        const { data } = await axios.get("http://localhost:3002");
+        const { data } = await axios.get("http://54.254.202.17:3002");
         series = data.reduce((acc, serie) => {
           acc.push(serie._id, JSON.stringify(serie));
           return acc;
@@ -60,7 +60,9 @@ const resolvers = {
         const serie = await redis.hget("series", args._id);
         if (serie) return JSON.parse(serie);
 
-        const { data } = await axios.get("http://localhost:3002/" + args.id);
+        const { data } = await axios.get(
+          "http://54.254.202.17:3002/" + args.id
+        );
 
         redis.hset("series", args._id, JSON.stringify(data));
         redis.expire("series", args._id);
